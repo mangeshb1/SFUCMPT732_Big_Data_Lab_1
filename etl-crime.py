@@ -49,11 +49,7 @@ def main():
     crime_groupByIUCR = sqlContext.sql("""SELECT Year, Latitude, Longitude, count(IUCR) as Crime_Frequency
                                           FROM crime_table_groupBy
                                           GROUP BY Year, Latitude, Longitude""")
-    crime_rdd = crime_groupByIUCR.map(lambda colName: (str(colName.Year) + "," + str(colName.Latitude) + "," + str(colName.Longitude)
-                                                       + "," + str(colName.Crime_Frequency)))
-
     crime_groupByIUCR.saveAsParquetFile(output+"/crime.kmeans_parquet")
-    crime_rdd.saveAsTextFile(output+"/crime.kmeans_txt")
 
 if __name__ == "__main__":
  main()
