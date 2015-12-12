@@ -54,15 +54,7 @@ def main():
                                           FROM crime_table crime JOIN socio_table socio
                                           ON crime.Community_Code = socio.Community_Code
                                           ORDER BY socio.Community_Code""")
-
-    living_index_rdd = living_index_data.map(lambda colName: (str(colName.Community_Code) + "," + str(colName.Crime_Frequency)
-                                                              + "," + str(colName.Housing_Crowded) + "," + str(colName.Household_BPL)
-                                                              + "," + str(colName.Unemployed) + "," + str(colName.Without_Diploma)
-                                                              + "," + str(colName.Age_Bar) + "," + str(colName.Per_Capita_Income)
-                                                              + "," + str(colName.Hardship_Index)))
-
     living_index_data.saveAsParquetFile(output+"/living_index.kmeans_parquet")
-    living_index_rdd.saveAsTextFile(output+"/living_index.kmeans_txt")
 
 if __name__ == "__main__":
  main()
