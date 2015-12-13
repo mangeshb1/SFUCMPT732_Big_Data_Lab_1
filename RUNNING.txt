@@ -1,0 +1,15 @@
+Procedure to run PySpark code:
+1. All the input files are present in the directory: /user/dsivaram/City_of_Chicago_Dataset
+2. Commands:
+	module load bigdata
+	module load spark/1.5.1
+	module load pypy
+	CRIME CLUSTERING:
+	1. etl-crime.py: spark-submit --packages com.databricks:spark-csv_2.11:1.2.0 etl-crime.py /user/dsivaram/City_of_Chicago_Dataset/Crime_Data.csv /user/dsivaram/City_of_Chicago_Dataset/IUCR_Codes.csv <output_file_path>
+	2. kmeans-crime.py: spark-submit kmeans-crime.py <output_directory>/crime.kmeans_parquet
+	3. kmeans-output.py: spark-submit kmeans-output.py /user/dsivaram/myModel_crime/data <output_directory>
+	
+	LIVING-INDEX FACTORS CLUSTERING:
+	1. etl-living_index.py: spark-submit --packages com.databricks:spark-csv_2.11:1.2.0 etl-living_index.py /user/dsivaram/City_of_Chicago_Dataset/Crime_Data.csv /user/dsivaram/City_of_Chicago_Dataset/Socio_Data.csv <output_file_path>
+	2. kmeans-living_index.py: spark-submit kmeans-living_index.py <output_directory>/living_index.kmeans_parquet
+	3. kmeans-output.py: spark-submit kmeans-output.py /user/dsivaram/myModel_living-index/data <output_directory>
