@@ -49,7 +49,7 @@ def main():
     crime_groupByIUCR = sqlContext.sql("""SELECT Year, Latitude, Longitude, count(IUCR) as Crime_Frequency
                                           FROM crime_table_groupBy
                                           GROUP BY Year, Latitude, Longitude""")
-    crime_groupByIUCR.saveAsParquetFile(output+"/crime.kmeans_parquet")
+    crime_groupByIUCR.saveAsParquetFile(output+"/crime_parquet")
 
 if __name__ == "__main__":
  main()
