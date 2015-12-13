@@ -8,7 +8,7 @@ from math import sqrt
 
 import sys
 
-conf = SparkConf().setAppName('K-Means test')
+conf = SparkConf().setAppName('K-Means clustering of Socio-Economic factors and Crime factors using MLlib')
 sc = SparkContext(conf=conf)
 assert sc.version >= '1.5.1'
 sqlContext = SQLContext(sc)
@@ -41,5 +41,5 @@ error = cluster_input.map(lambda point: squared_error(point)).reduce(lambda x, y
 print("Squared error for a cluster = " + str(error))
 
 # Save the cluster model
-clusters.save(sc, "myModel/living-index")
-sameModel = KMeansModel.load(sc, "myModel/living-index")
+clusters.save(sc, "myModel_living-index")
+sameModel = KMeansModel.load(sc, "myModel_living-index")
