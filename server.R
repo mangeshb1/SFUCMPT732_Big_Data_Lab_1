@@ -1,28 +1,25 @@
 
-# This is the server logic for a Shiny web application.
+# Server logic for a Shiny web application.
 #
 
 library(shiny)
-library(ggmap)
-library(googleVis)
+library(ggmap)  # Lib for google maps
+library(googleVis)  # Lib for gvisGauge and gvisPieChart
 shinyServer(function(input, output) {
   output$mapChicago <- renderPlot({
 
     if(input$zoomL != ' ' ){
-       zL <<- as.integer(input$zoomL)
+       zL <<- as.integer(input$zoomL) #Storing as Global
     }
     if(input$mapType == ' '){
        mapType <<- 'hybrid'
     }else{
       mapType <<- toString(input$mapType)
     }
-    aggFile <- read.csv(file="C:/Users/Mangesh/Documents/app/Census_Data_-_Selected_socioeconomic_indicators.csv",head=TRUE,sep=",")
+    aggFile <- read.csv(file="C:/Users/Mangesh/Documents/app/op_LI_KmeansUpdated.csv",head=TRUE,sep=",")
     if(input$pts == 'crime'){
-    crimepoints <-read.csv(file="C:/Users/Mangesh/Documents/app/Crimes_-_Map.csv",head=TRUE,sep=",")
-    #coords <- cbind(Longitude = as.numeric(as.character(crimepoints$LONGITUDE)), Latitude = as.numeric(as.character(crimepoints$LATITUDE)))
-    #crime.pts <- SpatialPointsDataFrame(coords, crimes[, -(5:6)], proj4string = CRS("+init=epsg:4326"))
+    crimepoints <-read.csv(file="C:/Users/Mangesh/Documents/app/Crimes_-_Map - update.csv",head=TRUE,sep=",")
     map <- qmap('Chicago', zoom = zL, maptype = mapType)
-    # generate bins based on input$bins from ui.R
     myMap <- map + geom_point(data = crimepoints, aes(x = Longitude, y = Latitude), color="red", size=3, alpha=0.5)
 
     print(myMap, newpage = FALSE)
@@ -30,45 +27,69 @@ shinyServer(function(input, output) {
     else if(input$pts == 'll'){
       problem_landlord <-read.csv(file="C:/Users/Mangesh/Documents/app/Problem_Landlord_List_-_Map.csv",head=TRUE,sep=",")
       map <- qmap('Chicago', zoom = zL, maptype = mapType)
-      myMap <- map + geom_point(data = problem_landlord, aes(x = Longitude, y = Latitude), color="yellow", size=3, alpha=0.5)
+      myMap <- map + geom_point(data = problem_landlord, aes(x = Longitude, y = Latitude), color="red", size=3, alpha=0.5)
 
       print(myMap, newpage = FALSE)
     }
-    else if(input$aggBlock == 'PERCENT_OF_HOUSING_CROWDED'){
-    selcol = aggFile[,c("COMMUNITY.AREA.NAME","PERCENT.OF.HOUSING.CROWDED")]
+    else if(input$pts == 'fm'){
+      farmMarket <-read.csv(file="C:/Users/Mangesh/Documents/app/Farmers_Markets_-_2015.csv",head=TRUE,sep=",")
+      map <- qmap('Chicago', zoom = zL, maptype = mapType)
+      myMap <- map + geom_point(data = farmMarket, aes(x = Longitude, y = Latitude), color="green", size=3, alpha=0.5)
+
+      print(myMap, newpage = FALSE)
+    }
+    else if(input$pts == 'sc'){
+      schools <-read.csv(file="C:/Users/Mangesh/Documents/app/schools.csv",head=TRUE,sep=",")
+      map <- qmap('Chicago', zoom = zL, maptype = mapType)
+      myMap <- map + geom_point(data = schools, aes(x = Longitude, y = Latitude), color="green", size=3, alpha=0.5)
+
+      print(myMap, newpage = FALSE)
+    }
+    else if(input$pts == 'ps'){
+      police <-read.csv(file="C:/Users/Mangesh/Documents/app/Police_Stations.csv",head=TRUE,sep=",")
+      map <- qmap('Chicago', zoom = zL, maptype = mapType)
+      myMap <- map + geom_point(data = police, aes(x = Longitude, y = Latitude), color="yellow", size=3, alpha=0.5)
+
+      print(myMap, newpage = FALSE)
+    }
+    else if(input$aggBlock == 'Crime_Frequency'){
+    selcol = aggFile[,c("Community_Name","Crime_Frequency")]
     selcol.data <- as.data.frame(selcol)
-    pie <- gvisPieChart(selcol.data,options=list(height=500,width=500))
+    pie <- gvisPieChart(selcol.data,options=list(height=700,width=700))
     plot(pie)
     }
-    else if(input$aggBlock == 'PERCENT_HOUSEHOLDS_BELOW_POVERTY'){
-      selcol = aggFile[,c("COMMUNITY.AREA.NAME","PERCENT.HOUSEHOLDS.BELOW.POVERTY")]
+    else if(input$aggBlock == 'Housing_Crowded'){
+      selcol = aggFile[,c("Community_Name","Housing_Crowded")]
       selcol.data <- as.data.frame(selcol)
-      pie <- gvisPieChart(selcol.data,options=list(height=500,width=500))
+      pie <- gvisPieChart(selcol.data,options=list(height=700,width=700))
       plot(pie)
     }
-    else if(input$aggBlock == 'PERCENT_AGED_16+_UNEMPLOYED'){
-      selcol = aggFile[,c("COMMUNITY.AREA.NAME","PERCENT.AGED.16..UNEMPLOYED")]
+    else if(input$aggBlock == 'Household_BPL'){
+      selcol = aggFile[,c("Community_Name","Household_BPL")]
       selcol.data <- as.data.frame(selcol)
-      pie <- gvisPieChart(selcol.data,options=list(height=500,width=500))
+      pie <- gvisPieChart(selcol.data,options=list(height=700,width=700))
       plot(pie)
     }
-    else if(input$aggBlock == 'PERCENT_AGED_25+_WITHOUT_HIGH_SCHOOL_DIPLOMA'){
-      selcol = aggFile[,c("COMMUNITY.AREA.NAME","PERCENT.AGED.25..WITHOUT.HIGH.SCHOOL.DIPLOMA")]
+    else if(input$aggBlock == 'Unemployed'){
+      selcol = aggFile[,c("Community_Name","Unemployed")]
       selcol.data <- as.data.frame(selcol)
-      pie <- gvisPieChart(selcol.data,options=list(height=500,width=500))
+      pie <- gvisPieChart(selcol.data,options=list(height=700,width=700))
       plot(pie)
     }
-    else if(input$aggBlock == 'PERCENT_AGED_UNDER_18_OR_OVER_64'){
-      selcol = aggFile[,c("COMMUNITY.AREA.NAME","PERCENT.AGED.UNDER.18.OR.OVER.64")]
+    else if(input$aggBlock == 'Per_Capita_Income'){
+      selcol = aggFile[,c("Community_Name","Per_Capita_Income")]
       selcol.data <- as.data.frame(selcol)
-      pie <- gvisPieChart(selcol.data,options=list(height=500,width=500))
+      pie <- gvisPieChart(selcol.data,options=list(height=700,width=700))
       plot(pie)
     }
-    else if(input$aggBlock == 'PER_CAPITA_INCOME'){
-      selcol = aggFile[,c("COMMUNITY.AREA.NAME","PER.CAPITA.INCOME")]
+    else if(input$aggBlock == 'Living_Index'){
+      selcol = aggFile[,c("Community_Name","Living_Index")]
       selcol.data <- as.data.frame(selcol)
-      pie <- gvisPieChart(selcol.data,options=list(height=500,width=500))
-      plot(pie)
+      Gauge <-  gvisGauge(selcol.data,
+                          options=list(min=-1, max=1, greenFrom=0.5,
+                                       greenTo=1, yellowFrom=-0.2, yellowTo=0.4,
+                                       redFrom=-1, redTo=-0.3, width=800, height=800))
+      plot(Gauge)
     }
 
    })
