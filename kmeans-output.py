@@ -5,7 +5,7 @@ from pyspark.sql import SQLContext, DataFrame, Row
 
 import sys
 
-conf = SparkConf().setAppName('K-Means test')
+conf = SparkConf().setAppName('Output of K-Means clustering')
 sc = SparkContext(conf=conf)
 assert sc.version >= '1.5.1'
 sqlContext = SQLContext(sc)
