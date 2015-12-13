@@ -54,7 +54,7 @@ def main():
                                           FROM crime_table crime JOIN socio_table socio
                                           ON crime.Community_Code = socio.Community_Code
                                           ORDER BY socio.Community_Code""")
-    living_index_data.saveAsParquetFile(output+"/living_index.kmeans_parquet")
+    living_index_data.saveAsParquetFile(output+"/living-index_parquet")
 
 if __name__ == "__main__":
  main()
