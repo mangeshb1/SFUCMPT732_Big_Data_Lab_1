@@ -8,7 +8,7 @@ from math import sqrt
 
 import sys
 
-conf = SparkConf().setAppName('K-Means test')
+conf = SparkConf().setAppName('K-Means clustering of Crime Data using MLlib')
 sc = SparkContext(conf=conf)
 assert sc.version >= '1.5.1'
 sqlContext = SQLContext(sc)
@@ -38,5 +38,6 @@ def squared_error(point):
 error = cluster_input.map(lambda point: squared_error(point)).reduce(lambda x, y: x + y)
 print("Squared error for a cluster = " + str(error))
 
-clusters.save(sc, "myModel_crime/crime")
-sameModel = KMeansModel.load(sc, "myModel_crime/crime")
+# Save the cluster output into parquet files
+clusters.save(sc, "myModel_crime")
+sameModel = KMeansModel.load(sc, "myModel_crime")
