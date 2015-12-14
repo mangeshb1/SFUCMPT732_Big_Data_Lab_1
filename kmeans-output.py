@@ -12,8 +12,8 @@ sqlContext = SQLContext(sc)
 
 input_cluster = sys.argv[1]
 output = sys.argv[2]
-
-# Read the parquet data (output of K-means) and convert to RDD
+ 
+# Read the parquet data (output of K-means) and convert to RDD 
 parquet_cluster = sqlContext.read.parquet(input_cluster)
 parquet_cluster.registerTempTable("cluster_data")
 cluster_output = sqlContext.sql("SELECT * FROM cluster_data")

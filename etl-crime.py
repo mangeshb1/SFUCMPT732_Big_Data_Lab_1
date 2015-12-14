@@ -12,7 +12,7 @@ def main():
     sc = SparkContext(conf=conf)
     assert sc.version >= '1.5.1'
     sqlContext = SQLContext(sc)
-
+ 
     input_crime = sys.argv[1]
     input_iucr = sys.argv[2]
     output = sys.argv[3]

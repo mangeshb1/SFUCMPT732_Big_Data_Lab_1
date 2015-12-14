@@ -1,3 +1,5 @@
+// CMPT732 Project - City of Chicago Living Index - Dhivya Sivaramakrishnan, Mangesh Bhangare
+
 Procedure to run PySpark code:
 1. All the input files are present in the directory: /user/dsivaram/City_of_Chicago_Dataset
 2. Commands:
@@ -5,11 +7,12 @@ Procedure to run PySpark code:
 	module load spark/1.5.1
 	module load pypy
 	CRIME CLUSTERING:
-	1. etl-crime.py: spark-submit --packages com.databricks:spark-csv_2.11:1.2.0 etl-crime.py /user/dsivaram/City_of_Chicago_Dataset/Crime_Data.csv /user/dsivaram/City_of_Chicago_Dataset/IUCR_Codes.csv <output_file_path>
-	2. kmeans-crime.py: spark-submit kmeans-crime.py <output_directory>/crime.kmeans_parquet
-	3. kmeans-output.py: spark-submit kmeans-output.py /user/dsivaram/myModel_crime/data <output_directory>
+	a. etl-crime.py: spark-submit --packages com.databricks:spark-csv_2.11:1.2.0 etl-crime.py /user/dsivaram/City_of_Chicago_Dataset/Crime_Data.csv /user/dsivaram/City_of_Chicago_Dataset/IUCR_Codes.csv <output_file_path>
+	b. kmeans-crime.py: spark-submit kmeans-crime.py <output_directory_crimeETL>/crime_parquet
+	c. kmeans-output.py: spark-submit kmeans-output.py /user/dsivaram/myModel_crime/data <output_directory>
 	
 	LIVING-INDEX FACTORS CLUSTERING:
-	1. etl-living_index.py: spark-submit --packages com.databricks:spark-csv_2.11:1.2.0 etl-living_index.py /user/dsivaram/City_of_Chicago_Dataset/Crime_Data.csv /user/dsivaram/City_of_Chicago_Dataset/Socio_Data.csv <output_file_path>
-	2. kmeans-living_index.py: spark-submit kmeans-living_index.py <output_directory>/living_index.kmeans_parquet
-	3. kmeans-output.py: spark-submit kmeans-output.py /user/dsivaram/myModel_living-index/data <output_directory>
+	a. etl-living_index.py: spark-submit --packages com.databricks:spark-csv_2.11:1.2.0 etl-living_index.py /user/dsivaram/City_of_Chicago_Dataset/Crime_Data.csv /user/dsivaram/City_of_Chicago_Dataset/Socio_Data.csv <output_file_path>
+	b. kmeans-living_index.py: spark-submit kmeans-living_index.py <output_directory_living-indexETL>/living-index_parquet
+	c. kmeans-output.py: spark-submit kmeans-output.py /user/dsivaram/myModel_living-index/data <output_directory>
+NOTE: PyPy module should not be loaded while running the K-Means code (kmeans-crime.py, kmeans-living_index.py, kmeans-output.py)
